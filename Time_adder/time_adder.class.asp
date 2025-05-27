@@ -89,14 +89,42 @@
 
         'Public function to convert a time in seconds
         Private Function tranforms_into_seconds(ByVal time, ByVal time_indicator, ByVal separation_character)
+        Dim temp
             Select Case time_indicator
                 Case "s"
-                    tranforms_into_seconds = time 
+                    tranforms_into_seconds = CInt(time)
                     Exit Function 
                 Case "m"
+                    temp = Split(time, separation_character)
+                    Select Case UBound(temp)
+                        Case 0
+                            tranforms_into_seconds = (CInt(time) * 60)
+                            Exit Function 
+                        Case 1
+                            tranforms_into_seconds = (CInt(temp(0)) * 60) + CInt(temp(1))
+                            Exit Function
+                        Case Else 
+                            Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator for the time passed")
+                    End Select
                 Case "h"
+                    temp = Split(time, separation_character)
+                    Select Case UBound(temp)
+                        Case 0
+                            tranforms_into_seconds = (CInt(time) * 3600)
+                            Exit Function 
+                        Case 1
+                            tranforms_into_seconds = (CInt(temp(0)) * 3600) + CInt(temp(1) * 60)
+                            Exit Function
+                        Case 2 
+                            tranforms_into_seconds = (CInt(temp(0)) * 3600) + CInt(temp(1) * 60) +  CInt(temp(2))
+                            Exit Function
+                        case Else 
+                            Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator for the time passed")
+                            Exit Function
+                    End Select 
                 Case Else 
                     Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator")
+                    Exit Function
             End Select 
         End Function 
 
@@ -116,6 +144,22 @@
 
             End If 
             'Transforming time in seconds 
+            Dim totalTime
+            totalTime = tranforms_into_seconds(first_time) + tranforms_into_seconds(second_time)
+            Dim hours
+            Dim min
+            Dim sec
+            Select Case 
+                Case "s"
+                    sum_times = totalTime
+                    Exit Function 
+                Case "m"
+
+                Case "h"
+                Case Else 
+                    Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator")
+                    Exit Function
+            End Select
         End Function 
 
     End Class 
