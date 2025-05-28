@@ -154,8 +154,16 @@
                     sum_times = totalTime
                     Exit Function 
                 Case "m"
-
+                    min = Int(totalTime / 60)
+                    sec = totalTime Mod 60
+                    sum_times =  Right("0" & min,2) & ":" & Right("0" & sec,2) 
+                    Exit Function 
                 Case "h"
+                    ore = Int(totalTime / 3600)
+                    min = Int((totalTime Mod 3600) / 60)
+                    sec = totalTime Mod 60
+                    sum_times = Right("0" & ore,2) & ":" & Right("0" & min,2) & ":" & Right("0" & sec,2)
+                    Exit Function 
                 Case Else 
                     Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator")
                     Exit Function
