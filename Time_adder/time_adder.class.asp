@@ -28,27 +28,21 @@
             Exit Function 
         End Function 
 
-        'Private function to count how many time a character is in the time string 
-        Private Function count_character_presence(ByVal time, ByVal separation_character)
-            Dim index 
-            Dim char 
-            Dim count 
-            count = 0
-            For index = 1 To Len(time)
-                char = Mid(time, i, 1)
-                If(char = separation_character) Then 
-                    count = count + 1 
-                End If 
-            Next 
-            'return 
-            count_character_presence = conta
-        End Function 
-
         'Private function to check the integrity of a time 
         Private Function check_integrity(ByVal time, ByVal separation_character)
             'Check if in the time string is present the separaion character
             If(InStr(time, separation_character) > 0) Then 
-                Select Case count_character_presence(time, separation_character)
+                Select Case UBound(Split(time, separation_character))
+                    Case 0
+                        If(Len(time) > 0 And Len(time) < 3) Then 
+                            'Return
+                            check_integrity = True
+                            Exit Function 
+                        Else
+                            'Return
+                            check_integrity = False
+                            Exit Function
+                        End If 
                     Case 1
                         If(Len(time) > 2 And Len(time) < 6) Then 
                             'Return
@@ -89,9 +83,11 @@
 
         'Public function to convert a time in seconds
         Private Function tranforms_into_seconds(ByVal time, ByVal time_indicator, ByVal separation_character)
-        Dim temp
             Select Case time_indicator
                 Case "s"
+                    If Not(separation_character = "" or IsNull(separation_character)) Then 
+                        Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - A time is not correct")
+                    End If 
                     tranforms_into_seconds = CInt(time)
                     Exit Function 
                 Case "m"
@@ -128,47 +124,80 @@
             End Select 
         End Function 
 
+        'Private function to return the bigger number
+        Private Function return_bigger(ByVal a, ByVal b)
+            'return_bigger = IIf(a > b, a, b)
+            If a > b Then 
+                return_bigger = a
+                Exit Function 
+            Else 
+                return_bigger = b
+                Exit Function 
+            End If 
+        End Function 
+
         'Public function to return the sum 
         Public Function sum_times(ByVal first_time, ByVal second_time, ByVal checks, ByVal time_indicator, ByVal separation_character)
             'if true checking if times are different
             If(checks) Then 
                 'checking if the time strings could be a time
                 If(Not(is_time(first_time)) Or Not(is_time(second_time))) Then 
-                    Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Time is not correct")
+                    Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - A time is not correct")
                 End If 
 
                 'checking if times are good
                 If(Not(check_integrity(first_time, separation_character)) Or Not(check_integrity(second_time, separation_character))) Then 
-                    Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Time is not good")
+                    Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - A time is not good")
                 End If 
 
             End If 
             'Transforming time in seconds 
             Dim totalTime
-            totalTime = tranforms_into_seconds(first_time) + tranforms_into_seconds(second_time)
+            totalTime = tranforms_into_seconds(first_time, time_indicator, separation_character) + tranforms_into_seconds(second_time, time_indicator, separation_character)
             Dim hours
             Dim min
             Dim sec
-            Select Case 
+            Select Case time_indicator
                 Case "s"
                     sum_times = totalTime
                     Exit Function 
                 Case "m"
                     min = Int(totalTime / 60)
                     sec = totalTime Mod 60
-                    sum_times =  Right("0" & min,2) & ":" & Right("0" & sec,2) 
+                    Select Case return_bigger(UBound(Split(first_time, separation_character)), UBound(Split(second_time, separation_character)))
+                        Case 0
+                            sum_times =  Right("0" & min,2)
+                            Exit Function 
+                        Case 1
+                            sum_times =  Right("0" & min,2) & ":" & Right("0" & sec,2)
+                            Exit Function 
+                        Case Else 
+                            Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator for the time passed")
+                            Exit Function
+                    End Select
                     Exit Function 
                 Case "h"
                     ore = Int(totalTime / 3600)
                     min = Int((totalTime Mod 3600) / 60)
                     sec = totalTime Mod 60
-                    sum_times = Right("0" & ore,2) & ":" & Right("0" & min,2) & ":" & Right("0" & sec,2)
-                    Exit Function 
+                    Select Case return_bigger(UBound(Split(first_time, separation_character)), UBound(Split(second_time, separation_character)))
+                        Case 0
+                            sum_times = Right("0" & ore,2)
+                            Exit Function 
+                        Case 1
+                            sum_times = Right("0" & ore,2) & ":" & Right("0" & min,2)
+                            Exit Function 
+                        Case 2
+                            sum_times = Right("0" & ore,2) & ":" & Right("0" & min,2) & ":" & Right("0" & sec,2)
+                            Exit Function 
+                        Case Else 
+                            Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator for the time passed")
+                            Exit Function
+                    End Select
                 Case Else 
                     Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator")
                     Exit Function
             End Select
         End Function 
-
     End Class 
 %> 
