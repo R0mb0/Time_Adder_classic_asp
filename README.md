@@ -10,7 +10,7 @@
 
 ## `time_adder.class.asp's avaible function
 
-- Function to add two times → `Public Function sum_times(ByVal first_time, ByVal second_time, ByVal checks, ByVal time_indicator, ByVal separation_character)`
+- Function to add two times -> `Public Function sum_times(ByVal first_time, ByVal second_time, ByVal checks, ByVal time_indicator, ByVal separation_character)`
   >
   > - `first_time`: The first time value to add (as a string).
   > - `second_time`: The second time value to add (as a string).
