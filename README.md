@@ -8,7 +8,7 @@
 
 [![Donate](https://img.shields.io/badge/PayPal-Donate%20to%20Author-blue.svg)](http://paypal.me/R0mb0)
 
-## `time_adder.class.asp's avaible function
+## `time_adder.class.asp`'s avaible function
 
 - Function to add two times -> `Public Function sum_times(ByVal first_time, ByVal second_time, ByVal checks, ByVal time_indicator, ByVal separation_character)`
   >
