@@ -169,7 +169,7 @@
                             sum_times =  Right("0" & min,2)
                             Exit Function 
                         Case 1
-                            sum_times =  Right("0" & min,2) & ":" & Right("0" & sec,2)
+                            sum_times =  Right("0" & min,2) & separation_character & Right("0" & sec,2)
                             Exit Function 
                         Case Else 
                             Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator for the time passed")
@@ -185,10 +185,10 @@
                             sum_times = Right("0" & ore,2)
                             Exit Function 
                         Case 1
-                            sum_times = Right("0" & ore,2) & ":" & Right("0" & min,2)
+                            sum_times = Right("0" & ore,2) & separation_character & Right("0" & min,2)
                             Exit Function 
                         Case 2
-                            sum_times = Right("0" & ore,2) & ":" & Right("0" & min,2) & ":" & Right("0" & sec,2)
+                            sum_times = Right("0" & ore,2) & separation_character & Right("0" & min,2) & separation_character & Right("0" & sec,2)
                             Exit Function 
                         Case Else 
                             Call Err.Raise(vbObjectError + 10, "time_adder.class","sum_times - Wrong time indicator for the time passed")
