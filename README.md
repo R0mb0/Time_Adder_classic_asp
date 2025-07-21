@@ -1,4 +1,4 @@
-# Time Adder classic asp
+# Time Adder Classic ASP
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/77ab5c2aec3d48d39a70860ddf120673)](https://app.codacy.com/gh/R0mb0/Time_Adder_classic_asp/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
